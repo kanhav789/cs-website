@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pensioners Website</title>
+  <style>
+    body {
+      background-color:rgb(9, 243, 243);
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 600px;
+      margin: 100px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    h1, h2, label, input, button, select {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div style="text-align: right; padding: 10px;">
+    <label for="language">Select Language:</label>
+    <select id="language" onchange="changeLanguage()">
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+    </select>
+  </div>
+
+  <div class="container">
+    <h1 id="portalTitle">Pensioners Portal</h1>
+    <form id="loginForm" onsubmit="return showPensionDetails()">
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="Enter your username" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <div class="container" id="pensionDetails" style="display: none;">
+    <h2 id="detailsTitle">Pension Details</h2>
+    <p>Your pension amount: $5000</p>
+    <p>Pension start date: January 1, 2022</p>
+  </div>
+
+  <button id="voiceSearchButton">Voice Search</button>
+
+  <script>
+    // Language options
+    const translations = {
+      en: {
+        portalTitle: "Pensioners Portal",
+        detailsTitle: "Pension Details",
+        // Other English translations
+      },
+      es: {
+        portalTitle: "Portal para Jubilados",
+        detailsTitle: "Detalles de la Pensión",
+        // Other Spanish translations
+      },
+      fr: {
+        portalTitle: "Portail des Retraités",
+        detailsTitle: "Détails de la Pension",
+        // Other French translations
+      }
+    };
+
+    // Set initial language
+    let currentLanguage = "en";
+    applyTranslations();
+
+    // Function to change the language
+    function changeLanguage() {
+      currentLanguage = document.getElementById("language").value;
+      applyTranslations();
+    }
+
+    // Apply translations to the content
+    function applyTranslations() {
+      const elementsToUpdate = ["portalTitle", "detailsTitle"];
+      elementsToUpdate.forEach(elementId => {
+        const translation = translations[currentLanguage][elementId];
+        document.getElementById(elementId).textContent = translation;
+      });
+    }
+
+    // Code for successful login and pension details display
+    function showPensionDetails() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // You can perform backend validation here
+      // For the sake of simplicity, let's assume the login is successful
+      if (username === "user123" && password === "password123") {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("pensionDetails").style.display = "block";
+      }
+
+      return false; // Prevent form submission
+    }
+
+    // Voice Search functionality
+    const voiceSearchButton = document.getElementById("voiceSearchButton");
+    voiceSearchButton.addEventListener("click", () => {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.start();
+      recognition.onresult = event => {
+        const query = event.results[0][0].transcript;
+        // Use the query for search or other interactions
+        console.log("Voice Search Query:", query);
+      };
+    });
+  </script>
+</body>
+</html>
